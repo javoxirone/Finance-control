@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.80.0">
+    <title>Finance Control App (by Javokhir Nurmatjonov)</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="fontawesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+    <script src="chart.min.js"></script>
+    <script src="utils.js"></script>
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+  </head>
+  <body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Финансовый контроль</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Выход</a>
+    </li>
+  </ul>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="index.html">
+              <span data-feather="home"></span>
+              Приборная панель
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Приборная панель</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <select class="custom-select option__time" id="inputGroupSelect02" style="border-radius: 3px; color: #6c757d; border-color: #6c757d;">
+            <option value="today">Сегодня</option>
+            <option value="month">За Месяц</option>
+            <option value="year">За год</option>
+            <option value="all">За все время</option>
+          </select>
+        </div>
+      </div>
+      <section class="total">
+        <div class="total__header">
+          <h2>Баланс</h2>
+          <p class="total__balance"></p>
+        </div>
+        <div class="total__main">
+          <div class="total__main-item total__income">
+            <h4>Доходы</h4>
+            <p class="total__money total__money-income">
+            </p>
+          </div>
+          <div class="total__main-item total__expenses">
+            <h4>Расходы</h4>
+            <p class="total__money total__money-expenses">
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="graphic row justify-content-between" id="graphic">
+      <h2 class="section-title">Диограмма</h2>
+<!--      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>-->
+        <div style="width:50%;">
+          <canvas id="myChart"></canvas>
+        </div>
+
+        <div style="width:50%;">
+          <canvas id="canvas"></canvas>
+        </div>
+      </section>
+
+      <section class="consumption" id="consumption">
+      <h2 class="section-title">История расходов</h2>
+
+        <table class="table bg-light">
+          <thead>
+          <tr>
+            <th scope="col">Дата</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Категория</th>
+            <th scope="col">Сумма</th>
+            <th scope="col">Инструменты</th>
+          </tr>
+          </thead>
+          <tbody class="history-list">
+          </tbody>
+        </table>
+        <form id="form" style="display: flex;
+  justify-content: flex-start;
+  align-items: center;">
+          <label>
+            <input type="text" class="operation__fields operation__name" placeholder="Наименование операции">
+          </label>
+
+              <span class="plus btn btn-success" onclick="plus()">Доход</span>
+              <span class="minus btn btn-danger" onclick="minus()">Расход</span>
+
+          <label>
+            <select name="" class="operation__category" class="custom-select" id="inputGroupSelect01" style="border-radius: 3px; color: #6c757d; border-color: #6c757d;">
+            </select>
+          </label>
+          <label>
+            <input type="number" class="operation__fields operation__amount" placeholder="Введите сумму">
+          </label>
+
+          <button class="btn btn-primary operation__add" type="submit">Add action</button>
+        </form>
+
+      </section>
+    </main>
+  </div>
+</div>
+
+
+
+      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+      <script src="dashboard.js"></script>
+  </body>
+</html>
